@@ -91,7 +91,8 @@ def peliFormulario(req):
             director_nombre= data["directorNombre"]
             director_apellido= data["directorApellido"]
             try:
-                director = Director.objects.filter(nombre=director_nombre, apellido=director_apellido).first()
+                director = Director.objects.get(nombre=director_nombre, apellido=director_apellido)
+                #director = Director.objects.filter(nombre=director_nombre, apellido=director_apellido).first()
             except Director.DoesNotExist:
                 director = Director(nombre=director_nombre, apellido=director_apellido)
                 director.save()

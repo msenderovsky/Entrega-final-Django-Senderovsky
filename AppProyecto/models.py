@@ -19,7 +19,7 @@ class Director (models.Model):
 class Película (models.Model):
     título = models.CharField(max_length=30)
     año= models.IntegerField()
-    director= models.ForeignKey(Director, on_delete=models.CASCADE)
-    productora= models.ForeignKey(Productora, on_delete=models.CASCADE)
+    director= models.ForeignKey(Director, on_delete=models.CASCADE, null=True)
+    productora= models.ForeignKey(Productora, on_delete=models.CASCADE, null=True)
     class Meta():
         unique_together= ('título', 'director')
