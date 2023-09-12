@@ -1,26 +1,35 @@
 {% extends 'padre.html' %}
 
 {% block contenido %}
-    <p>Resultado de la búsqueda</p>
-    <ul>
+    <h3>Resultado de la búsqueda</h3>
+
         {% if actores %}
-            {% for actor in actores%}
-            <li>
-                {{actor.nombre}} {{actor.apellido}}
-            </li>
-            {% endfor %}
-        {% elif directores %}
-            {% for director in directores%}
-            <li>
-                {{director.nombre}} {{director.apellido}}
-            </li>
-            {% endfor %}
-        {% elif peliculas %}
-            {% for pelicula in peliculas%}
-            <li>
-                {{pelicula.nombre}} {{pelicula.año}}
-            </li>
-            {% endfor %}
+            <p>Actores</p>
+            <ul>
+                {% for actor in actores %}
+                <li>
+                    {{actor.nombre}} {{actor.apellido}}
+                </li>
+                {% endfor %}
+            </ul>
         {% endif %}
-    </ul>
+        {% if directores %}
+            <p>Directores</p>
+            <ul>
+                {% for director in directores %}
+                <li>
+                    {{director.nombre}} {{director.apellido}}
+                </li>
+                {% endfor %}
+            </ul>
+        {% elif peliculas %}
+            <p>Películas</p>
+            <ul>
+                {% for pelicula in peliculas %}
+                <li>
+                    {{pelicula.título}} {{pelicula.año}}
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 {% endblock contenido %}

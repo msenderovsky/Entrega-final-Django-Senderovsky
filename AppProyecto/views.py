@@ -12,16 +12,16 @@ from .forms import ActorFormulario, DirectorFormulario, PeliFormulario
 def inicio(req):
     return render(req,'inicio.html')
 
-def película(req, nombre, año, director, productora):
-    director_obj = Director.objects.get(apellido=director)
+def película(req, título, año, director, productora):
+    director_obj = Director.objects.filter(apellido=director).first()
     productora_obj = Productora.objects.get(nombre=productora)
     película = Película(
-        nombre=nombre, año=año, director=director_obj, productora=productora_obj
+        título=título, año=año, director=director_obj, productora=productora_obj
     )
     película.save()
 
     return HttpResponse(
-        f"""<p> nombre: {película.nombre}, año: {película.año}, director: {película.director.nombre} {película.director.apellido}, productora: {película.productora.nombre} agregado</p>"""
+        f"""<p> nombre: {película.título}, año: {película.año}, director: {película.director.nombre} {película.director.apellido}, productora: {película.productora.nombre} agregado</p>"""
     )
 
 
@@ -88,32 +88,51 @@ def peliFormulario(req):
         miFormulario= PeliFormulario(req.POST)
         if miFormulario.is_valid():
             data= miFormulario.cleaned_data
-            pelicula= Película(nombre= data["nombre"], año=data["año"], director=data["director"], productora=data["productora"])
+            director_nombre= data["directorNombre"]
+            director_apellido= data["directorApellido"]
+            try:
+                director = Director.objects.filter(nombre=director_nombre, apellido=director_apellido).first()
+            except Director.DoesNotExist:
+                director = Director(nombre=director_nombre, apellido=director_apellido)
+                director.save()
+            productora_nombre= data["productora"]
+            try:
+                productora = Productora.objects.get(nombre=productora_nombre)
+            except Productora.DoesNotExist:
+                productora = Productora(nombre=productora_nombre)
+                productora.save()
+            pelicula= Película(título= data["título"], año=data["año"], director=director, productora=productora)
             pelicula.save()
             return render(req,"inicio.html")
     else:
-        miFormulario=DirectorFormulario() 
-        return render(req, "peliculaFormulario.html", {"miFormulario": miFormulario})
+        miFormulario=PeliFormulario() 
+        return render(req, "peliFormulario.html", {"miFormulario": miFormulario})
+    return HttpResponse() 
     
 def busquedaActor(req):
-    return render(req, "busquedaActor.html")
+    metodo="busquedaActor"
+    return render(req, "busquedaActor.html", {"metodo":metodo})
 
 def busquedaDirector(req):
-    return render(req, "busquedaDirector.html")
+    metodo="busquedaDirector"
+    return render(req, "busquedaDirector.html", {"metodo":metodo})
 
 def busquedaPelicula(req):
     return render(req, "busquedaPelicula.html")
 
 def buscar(req):
-    if req.GET['nombre'] and req.GET['apellido']:
+    if 'nombre' in req.GET and 'apellido' in req.GET:
         nombre= req.GET['nombre']
         apellido=req.GET['apellido']
-        actores= Actor.objects.filter(nombre=nombre, apellido=apellido)
-        return render(req, "resultadoBusqueda.html", {"actores": actores})
-    elif req.GET['nombre'] and req.GET['año']:
-        nombre= req.GET['nombre']
-        año=req.GET['año']
-        peliculas= Película.objects.filter(nombre=nombre, año=año)
+        metodo= req.GET.get('metodo')
+        if metodo=="busquedaActor":
+            actores= Actor.objects.filter(nombre=nombre, apellido=apellido)
+            return render(req, "resultadoBusqueda.html", {"actores": actores})
+        elif metodo=="busquedaDirector":
+            directores= Director.objects.filter(nombre=nombre, apellido=apellido)
+            return render(req, "resultadoBusqueda.html", {"directores":directores})
+    elif 'título' in req.GET:
+        título= req.GET['título']
+        peliculas= Película.objects.filter(título=título)
         return render(req, "resultadoBusqueda.html", {"peliculas": peliculas})
-    else:
-        return HttpResponse("No se encuentra el actor buscado")
+    return HttpResponse("No se encuentra lo que ésta buscando")

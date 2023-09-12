@@ -9,7 +9,8 @@ class DirectorFormulario(forms.Form):
     apellido= forms.CharField(max_length=10)
 
 class PeliFormulario(forms.Form):
-    nombre= forms.CharField(max_length=10)
+    título= forms.CharField(max_length=10)
     año= forms.IntegerField()
-    director= forms.CharField(max_length=10)
+    directorNombre= forms.CharField(max_length=10)
+    directorApellido= forms.CharField(max_length=10)
     productora= forms.CharField(max_length=10)

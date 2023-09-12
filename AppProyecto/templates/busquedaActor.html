@@ -3,6 +3,7 @@
 {% block contenido %}
     <p>Buscar actor por Nombre y Apellido</p>
     <form action="{% url 'buscar' %}" method="get">{% csrf_token %}
+        <input type="hidden" name="metodo" value="{{ metodo }}">
         <p>Nombre: <input type="text" name="nombre"></p>
         <p>Apellido: <input type="text" name="apellido"></p>
         <button type="submit">Enviar</button>

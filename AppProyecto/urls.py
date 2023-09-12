@@ -3,7 +3,7 @@ from .views import inicio, película, actor, productora, director, listar_pelis,
 
 urlpatterns = [
     path('', inicio, name="inicio"),
-    path('agrega-film/<nombre>/<año>/<director>/<productora>', película),
+    path('agrega-film/<título>/<año>/<director>/<productora>', película),
     path('agrega-actor/<nombre>/<apellido>/', actor),
     path('agrega-director/<nombre>/<apellido>/', director),
     path('agrega-productora/<nombre>/', productora),

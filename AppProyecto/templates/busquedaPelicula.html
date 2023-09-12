@@ -3,7 +3,7 @@
 {% block contenido %}
     <p>Buscar película por Nombre</p>
     <form action="{% url 'buscar' %}" method="get">{% csrf_token %}
-        <p>Nombre: <input type="text" name="nombre"></p>
+        <p>Título: <input type="text" name="título"></p>
         <button type="submit">Enviar</button>
     </form>
 {% endblock contenido %}

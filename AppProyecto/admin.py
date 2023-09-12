@@ -10,9 +10,9 @@ class DirectorAdmin(admin.ModelAdmin):
     search_fields= ['nombre', 'apellido']
     
 class PeliAdmin(admin.ModelAdmin):
-    list_display= ['nombre', 'año', 'director', 'productora']
-    search_fields= ['nombre', 'director']
-    list_filter= ['director', 'año', 'nombre']
+    list_display= ['título', 'año', 'director', 'productora']
+    search_fields= ['título', 'director']
+    list_filter= ['director', 'año', 'título']
 
 # Register your models here.
 admin.site.register(Película, PeliAdmin)
