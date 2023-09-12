@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Actores</title>
-</head>
-<body>
+{% extends 'padre.html' %}
+
+{% block contenido %}
     <ul>
-        
+            
         {% for actor in lista_actores %}
             <li>
                 {{actor.nombre}} {{actor.apellido}}
@@ -15,5 +10,4 @@
         {% endfor %}
             
     </ul>
-</body>
-</html>
+{% endblock contenido %}

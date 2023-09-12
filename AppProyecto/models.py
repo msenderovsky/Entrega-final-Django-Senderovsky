@@ -6,7 +6,7 @@ class Actor (models.Model):
     apellido= models.CharField(max_length=10)
     #nacimiento= models.DateField()
     películas= models.ManyToManyField('Película')
-    
+   
 class Productora (models.Model):
     nombre = models.CharField(max_length=10)
     #fundacion= models.DateField()
@@ -21,3 +21,5 @@ class Película (models.Model):
     año= models.IntegerField()
     director= models.ForeignKey(Director, on_delete=models.CASCADE)
     productora= models.ForeignKey(Productora, on_delete=models.CASCADE)
+    class Meta():
+        unique_together= ('nombre', 'director')

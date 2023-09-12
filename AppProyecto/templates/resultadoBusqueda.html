@@ -1,0 +1,26 @@
+{% extends 'padre.html' %}
+
+{% block contenido %}
+    <p>Resultado de la búsqueda</p>
+    <ul>
+        {% if actores %}
+            {% for actor in actores%}
+            <li>
+                {{actor.nombre}} {{actor.apellido}}
+            </li>
+            {% endfor %}
+        {% elif directores %}
+            {% for director in directores%}
+            <li>
+                {{director.nombre}} {{director.apellido}}
+            </li>
+            {% endfor %}
+        {% elif peliculas %}
+            {% for pelicula in peliculas%}
+            <li>
+                {{pelicula.nombre}} {{pelicula.año}}
+            </li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+{% endblock contenido %}

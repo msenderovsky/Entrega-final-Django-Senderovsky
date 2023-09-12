@@ -1,0 +1,9 @@
+{% extends 'padre.html' %}
+
+{% block contenido %}
+    <p>Buscar película por Nombre</p>
+    <form action="{% url 'buscar' %}" method="get">{% csrf_token %}
+        <p>Nombre: <input type="text" name="nombre"></p>
+        <button type="submit">Enviar</button>
+    </form>
+{% endblock contenido %}
