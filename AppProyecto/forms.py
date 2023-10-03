@@ -14,3 +14,13 @@ class PeliFormulario(forms.Form):
     directorNombre= forms.CharField(max_length=10)
     directorApellido= forms.CharField(max_length=10)
     productora= forms.CharField(max_length=10)
+
+class CriticoFormulario(forms.Form):
+    nombre= forms.CharField(max_length=10)
+    apellido= forms.CharField(max_length=10)
+    email= forms.EmailField()
+
+class CriticaFormulario(forms.Form):
+    titulo= forms.CharField(max_length=10)
+    texto= forms.Textarea()
+    critico= forms.EmailField()

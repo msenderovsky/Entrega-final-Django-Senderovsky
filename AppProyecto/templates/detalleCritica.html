@@ -1,0 +1,10 @@
+{% extends 'padre.html' %}
+
+{% block contenido %}
+
+    <h2>Crítica de {{critica.pelicula.nombre}}</h2>
+    <h3>{{critica.titulo}}</h3>
+    <h5>{{critica.critico.nombre}}{{critica.critico.apellido}}</h5>
+    <p>{{critica.texto}}</p>
+    
+{% endblock contenido %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Película, Actor, Director, Productora
+from .models import Película, Actor, Director
 
 class ActorAdmin(admin.ModelAdmin):
     list_display= ['nombre', 'apellido']
@@ -10,12 +10,10 @@ class DirectorAdmin(admin.ModelAdmin):
     search_fields= ['nombre', 'apellido']
     
 class PeliAdmin(admin.ModelAdmin):
-    list_display= ['título', 'año', 'director', 'productora']
+    list_display= ['título', 'director', 'productora']
     search_fields= ['título', 'director']
-    list_filter= ['director', 'año', 'título']
+    list_filter= ['director', 'título']
 
-# Register your models here.
 admin.site.register(Película, PeliAdmin)
 admin.site.register(Actor, ActorAdmin)
 admin.site.register(Director, DirectorAdmin)
-admin.site.register(Productora)

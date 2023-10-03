@@ -1,0 +1,8 @@
+{% extends 'padre.html' %}
+
+{% block contenido %}
+    <form action="{% url 'actualizarActor' actor.id %}" method="post">{% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Actualizar</button>
+    </form>
+{% endblock contenido %}

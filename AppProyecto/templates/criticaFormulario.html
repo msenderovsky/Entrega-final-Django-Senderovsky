@@ -1,7 +1,7 @@
 {% extends 'padre.html' %}
 
 {% block contenido %}
-    <form action="{% url 'crea-director' %}" method="post">{% csrf_token %}
+    <form action="{% url 'crea-critica' %}" method="post">{% csrf_token %}
         {{miFormulario.as_p}}
         <button type="submit">Enviar</button>
     </form>

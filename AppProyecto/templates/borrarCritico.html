@@ -1,0 +1,13 @@
+{% extends 'padre.html' %}
+
+{% block contenido %}
+    <form action="{% url 'eliminarCritico' %}" method="post">{% csrf_token %}
+        <p>¿Está seguro de borrar el crítico?</p>
+        <button type="submit">Confirmar</button>
+        <button>
+            <a href="{% url 'inicio' %}">
+                Cancelar
+            </a>
+        </button>
+    </form>
+{% endblock contenido %}

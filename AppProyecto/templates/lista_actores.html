@@ -2,12 +2,16 @@
 
 {% block contenido %}
     <ul>
-            
         {% for actor in lista_actores %}
             <li>
                 {{actor.nombre}} {{actor.apellido}}
+                <form action="{% url 'eliminarActor' actor.id %}" method="post">{% csrf_token %}
+                    <button type="submit">Eliminar</button>
+                </form>
+                <button>
+                    <a href="{% url 'actualizarActor' actor.id %}">Editar</a>
+                </button>
             </li>
         {% endfor %}
-            
     </ul>
 {% endblock contenido %}
