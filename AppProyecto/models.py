@@ -16,9 +16,11 @@ class Director (models.Model):
 class Película (models.Model):
     título = models.CharField(max_length=30)
     director= models.ForeignKey(Director, on_delete=models.CASCADE, null=True)
-    productora= models.CharField
+    productora= models.CharField(max_length=10)
     class Meta():
         unique_together= ('título', 'director')
+    def __str__(self):
+        return self.título
         
 class Critico (models.Model):
     nombre = models.CharField(max_length=10, default='Unknown')
@@ -32,5 +34,5 @@ class Critica(models.Model):
     pelicula= models.ForeignKey(Película, on_delete=models.CASCADE, null=True)
     
 class Usuario(models.Model):
-    nombreUsuario = models.CharField(max_length=10)
+    username = models.CharField(max_length=10)
     email=models.EmailField()

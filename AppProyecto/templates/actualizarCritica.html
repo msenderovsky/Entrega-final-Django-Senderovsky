@@ -1,7 +1,7 @@
 {% extends 'padre.html' %}
 
 {% block contenido %}
-    <form action="{% url 'actualizarCritica' %}" method="post">{% csrf_token %}
+    <form action="{% url 'actualizarCritica' critica.id %}" method="post">{% csrf_token %}
         {{form.as_p}}
         <button type="submit">Actualizar</button>
     </form>

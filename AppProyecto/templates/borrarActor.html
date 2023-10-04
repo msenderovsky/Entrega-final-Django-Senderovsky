@@ -1,7 +1,7 @@
 {% extends 'padre.html' %}
 
 {% block contenido %}
-    <form action="{% url 'eliminarActor' %}" method="post">{% csrf_token %}
+    <form action="{% url 'eliminarActor' actor.id %}" method="post">{% csrf_token %}
         <p>¿Está seguro de borrar el actor?</p>
         <button type="submit">Confirmar</button>
         <button>

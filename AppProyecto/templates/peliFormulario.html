@@ -2,7 +2,7 @@
 
 {% block contenido %}
     <form action="{% url 'peliFormulario' %}" method="post">{% csrf_token %}
-        {{miFormulario.as_p}}
+        {{form.as_p}}
         <button type="submit">Enviar</button>
     </form>
 {% endblock contenido %}

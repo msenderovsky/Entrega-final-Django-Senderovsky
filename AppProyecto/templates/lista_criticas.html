@@ -4,11 +4,15 @@
     <ul>
         {% for critica in lista_criticas %}
             <li>
-                {{critica}}
+                <h4>{{critica.pelicula}}</h4>
+                <h5>{{critica.titulo}}</h5>
                 <div>
                     <form action="{% url 'eliminarCritica' critica.id %}" method="post">{% csrf_token %}
                         <button type="submit">Elimiar</button>
                     </form>
+                    <button>
+                        <a href="{% url 'detalleCritica' pk=critica.id %}">Ver Crítica</a>
+                    </button>
                     <button>
                         <a href="{% url 'actualizarCritica' critica.id %}">Editar</a>
                     </button>

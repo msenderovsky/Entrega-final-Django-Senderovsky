@@ -6,11 +6,17 @@
             <li>
                 {{pelicula.título}}
                 <form action="{% url 'eliminarPelicula' pelicula.id %}" method="post">{% csrf_token %}
+                    <button> 
+                        <a href="{% url 'lista_criticas_id' pelicula.id %}">Ver Críticas</a>
+                    </button>
+                    <button>
+                        <a href="{% url 'actualizarPelicula' pelicula.id %}">Editar</a>
+                    </button>
+                    <button>
+                        <a href="{% url 'crearCritica' pelicula.id %}">Crear Crítica</a>
+                    </button>
                     <button type="submit">Eliminar</button>
                 </form>
-                <button>
-                    <a href="{% url 'actualizarPelicula' pelicula.id %}">Editar</a>
-                </button>
             </li>
         {% endfor %}
     </ul>

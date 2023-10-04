@@ -24,7 +24,18 @@
                 <a class="navbar-brand" href="{% url 'lista_pelis' %}">Películas</a>
                 <a class="navbar-brand" href="{% url 'lista_actores' %}">Actores</a>
                 <a class="navbar-brand" href="{% url 'lista_directores' %}">Directores</a>
-                <a class="btn btn-primary" href="#signup">Iniciar Sesión</a>
+                <a class="navbar-brand" href="{% url 'lista_criticos' %}">Críticos</a>
+                <a class="navbar-brand" href="{% url 'lista_criticas' %}">Críticas</a>
+                <a class="btn btn-primary" href="{% url 'registro' %}">Registrarse</a>
+                
+                {% if user.is_authenticated %}
+                    <p>Bienvenido<br>
+                        <b>{{user.username}}</b>
+                    </p>
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Cerrar Sesión</a>
+                {% else %}
+                    <a class="btn btn-primary" href="{% url 'login' %}">Iniciar Sesión</a>
+                {% endif %}
             </div>
         </nav>
         <!-- Masthead-->
