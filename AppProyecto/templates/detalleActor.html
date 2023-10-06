@@ -4,7 +4,7 @@
 
     <h3>Detalle de Actor</h3>
     <h5>{{actor.nombre}} {{actor.apellido}}</h5>
-    {% if actor.peliculas.exists %}
+    {% if actor.películas.exists %}
         <h6>Lista de películas del actor</h6>
         <ul>
             {% for pelicula in actor.películas.all %}

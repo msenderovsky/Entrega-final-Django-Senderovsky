@@ -46,7 +46,3 @@ class Critica(models.Model):
     imagen = models.ImageField(upload_to='images/', blank=True, null=True)
     critico= models.ForeignKey(Critico, on_delete=models.CASCADE, null=True)
     pelicula= models.ForeignKey(Película, on_delete=models.CASCADE, null=True)
-    
-class Usuario(models.Model):
-    username = models.CharField(max_length=10)
-    email=models.EmailField()
