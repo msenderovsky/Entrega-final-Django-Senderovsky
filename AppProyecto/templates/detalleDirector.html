@@ -2,12 +2,12 @@
 
 {% block contenido %}
 
-    <h3>Detalle de Actor</h3>
-    <h5>{{actor.nombre}} {{actor.apellido}}</h5>
-    {% if actor.peliculas.exists %}
-        <h6>Lista de películas del actor</h6>
+    <h3>Detalle de Director</h3>
+    <h5>{{director.nombre}} {{director.apellido}}</h5>
+    {% if director.película_set.exists %}
+        <h6>Lista de películas del director</h6>
         <ul>
-            {% for pelicula in actor.películas.all %}
+            {% for pelicula in director.película_set.all %}
                 <li>
                     <ul>
                         <li>
@@ -16,14 +16,11 @@
                         <li>
                             Productora: {{pelicula.productora}} 
                         </li>
-                        <li>
-                            Director: {{pelicula.director.nombre}} {{pelicula.director.apellido}}
-                        </li>
                     </ul>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>El actor no tiene películas</p>
+        <p>El director no tiene películas</p>
     {% endif %}
 {% endblock contenido %}

@@ -1,0 +1,22 @@
+{% extends 'padre.html' %}
+
+{% block contenido %}
+    <h3>Lista de películas de {{director.nombre}} {{director.apellido}}</h3>
+        {% if lista_peliculas %}
+            <ul>
+            {% for pelicula in lista_peliculas %}
+                <li>
+                    {{pelicula.título}} <br>
+                    <button> 
+                        <a href="{% url 'lista_criticas_id' pelicula.id %}" class="link">Ver Críticas</a>
+                    </button>
+                    <button> 
+                        <a href="{% url 'detallePeli' pelicula.id %}">Volver a página de la película</a>
+                    </button>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay películas creadas con este criterio</p>
+        {% endif %}
+{% endblock contenido %}

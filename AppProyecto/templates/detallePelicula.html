@@ -2,9 +2,10 @@
 
 {% block contenido %}
 
-    <h2>Crítica de {{critica.pelicula.nombre}}</h2>
-    <h3>{{critica.titulo}}</h3>
-    <h5>{{critica.critico.nombre}}{{critica.critico.apellido}}</h5>
-    <p>{{critica.texto}}</p>
+    <h2>{{pelicula.título}}</h2>
+    <h3>Director: {{pelicula.director.nombre}} {{pelicula.director.apellido}}</h3>
+    <button> 
+        <a href="{% url 'lista_criticas_id' pelicula.id %}">Ver críticas</a>
+    </button>
     
 {% endblock contenido %}

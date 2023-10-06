@@ -1,8 +1,8 @@
 {% extends 'padre.html' %}
 
 {% block contenido %}
-    <form action="{% url 'eliminarCritica' critica.id %}" method="post">{% csrf_token %}
-        <p>¿Está seguro de borrar la crítica?</p>
+    <form action="{% url 'eliminarDirector' director.id %}" method="post">{% csrf_token %}
+        <p>¿Está seguro de borrar el director?</p>
         <button type="submit">
             Confirmar
         </button>

@@ -1,23 +1,26 @@
 {% extends 'padre.html' %}
         
 {% block contenido %}
-    <ul>
-        {% for critica in lista_criticas %}
-            <li>
-                <h4>{{critica.pelicula}}</h4>
-                <h5>{{critica.titulo}}</h5>
-                <div>
-                    <form action="{% url 'eliminarCritica' critica.id %}" method="post">{% csrf_token %}
-                        <button type="submit">Elimiar</button>
+        {% if lista_criticas %}
+            <h3>Lista de Críticas:</h3>
+            <ul>
+            {% for critica in lista_criticas %}
+                <li>
+                    <h4>{{critica.pelicula}}</h4>
+                    <h5>{{critica.titulo}}</h5>
+                    <form action="{% url 'eliminarCritica' critica.id %}" method="get">{% csrf_token %}
+                        <button type="submit">Eliminar</button>
                     </form>
                     <button>
                         <a href="{% url 'detalleCritica' pk=critica.id %}">Ver Crítica</a>
                     </button>
                     <button>
-                        <a href="{% url 'actualizarCritica' critica.id %}">Editar</a>
+                        <a href="{% url 'actualizarCritica' critica.id %}">Editar Crítica</a>
                     </button>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay críticas creadas</p>
+        {% endif %}
 {% endblock contenido %}

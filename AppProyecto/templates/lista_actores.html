@@ -1,17 +1,31 @@
 {% extends 'padre.html' %}
 
 {% block contenido %}
-    <ul>
-        {% for actor in lista_actores %}
-            <li>
-                {{actor.nombre}} {{actor.apellido}}
-                <form action="{% url 'eliminarActor' actor.id %}" method="post">{% csrf_token %}
-                    <button type="submit">Eliminar</button>
-                </form>
-                <button>
-                    <a href="{% url 'actualizarActor' actor.id %}">Editar</a>
-                </button>
-            </li>
-        {% endfor %}
-    </ul>
+        {% if lista_actores %}
+            <h3>Lista de Actores:</h3>
+            <ul>
+            {% for actor in lista_actores %}
+                <li>
+                    {{actor.nombre}} {{actor.apellido}}
+                    <form action="{% url 'eliminarActor' actor.id %}" method="get">{% csrf_token %}
+                        <button type="submit">Eliminar</button>
+                    </form>
+                    <button> 
+                        <a href="{% url 'detalleActor' actor.id %}">Ver detalles de actor</a>
+                    </button>
+                    <button> 
+                        <a href="{% url 'lista_peliculas_actor' actor.id %}">Ver películas</a>
+                    </button>
+                    <button>
+                        <a href="{% url 'actualizarActor' actor.id %}">Editar</a>
+                    </button>
+                </li>
+            {% endfor %}    
+            </ul>
+        {% else %}
+            <p>No hay actores creados</p>
+        {% endif %}
+        <button> 
+            <a href="{% url 'crearActor' %}">Crear nuevo actor</a>
+        </button>
 {% endblock contenido %}

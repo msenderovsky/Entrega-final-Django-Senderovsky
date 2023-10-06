@@ -1,19 +1,27 @@
 {% extends 'padre.html' %}
         
 {% block contenido %}
-    <ul>
-        {% for critico in lista_criticos %}
-            <li>
-                {{critico}}
-                <div>
-                    <form action="{% url 'eliminarCritico' critico.id %}" method="post">{% csrf_token %}
-                        <button type="submit">Elimiar</button>
-                    </form>
-                    <button>
-                        <a href="{% url 'actualizarCritico' critico.id %}">Editar</a>
-                    </button>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+        {% if lista_criticos %}  
+            <h3>Lista de Críticos:</h3>
+            <ul>
+            {% for critico in lista_criticos %}
+                <li>
+                    {{critico.user.username}}
+                    <div>
+                        <form action="{% url 'eliminarCritico' critico.id %}" method="get">{% csrf_token %}
+                            <button type="submit">Eliminar</button>
+                        </form>
+                        <button>
+                            <a href="{% url 'actualizarCritico' critico.id %}">Editar</a>
+                        </button>
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay críticos creados</p>
+        {% endif %}
+        <button>
+            <a href="{% url 'crearCritico' %}">Crear nuevo crítico</a>
+        </button>
 {% endblock contenido %}

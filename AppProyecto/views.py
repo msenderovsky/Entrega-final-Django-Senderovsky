@@ -1,14 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
+from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy, reverse
 from .models import *
 from .forms import *
 
@@ -55,6 +58,46 @@ class ListarCriticasID(ListView):
         queryset = queryset.filter(pelicula__id=pelicula_id)
         return queryset
 
+class ListarPeliculasActorID(ListView):
+    model= Película
+    template_name= "lista_peliculas_actor.html"
+    context_object_name= "lista_peliculas"
+    def get_queryset(self):
+        actor_id = self.kwargs['pk']
+        queryset = super().get_queryset()
+        queryset = queryset.filter(actor__id=actor_id)
+        return queryset
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        actor_id = self.kwargs['pk']
+        actor = Actor.objects.get(id=actor_id)
+        context['actor'] = actor
+        return context
+    
+class ListarPeliculasDirectorID(ListView):
+    model= Película
+    template_name= "lista_peliculas_director.html"
+    context_object_name= "lista_peliculas"
+    def get_queryset(self):
+        director_id = self.kwargs['pk']
+        queryset = super().get_queryset()
+        queryset = queryset.filter(director__id=director_id)
+        return queryset
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        director_id = self.kwargs['pk']
+        director = Director.objects.get(id=director_id)
+        context['director'] = director
+        return context
+        
+class DetalleUsuario(DetailView):
+    model:User
+    template_name="detalleUsuario.html"
+    context_object_name="user"
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
 class DetalleActor(DetailView):
     model = Actor
     template_name = "detalleActor.html"
@@ -79,12 +122,19 @@ class DetalleCritica(DetailView):
     model = Critica
     template_name = "detalleCritica.html"
     context_object_name= "critica"
-    pk_url_kwarg = "pk"
+    #pk_url_kwarg = "pk"
+
+class ActorCreationForm(forms.ModelForm):
+    películas = forms.ModelMultipleChoiceField(queryset=Película.objects.all())
+
+    class Meta:
+        model = Actor
+        fields = ['nombre', 'apellido', 'películas']
 
 class CrearActor(StaffRequiredMixin, CreateView):
     model = Actor
     template_name = "crearActor.html"
-    fields=['nombre','apellido','peliculas']
+    form_class = ActorCreationForm
     success_url='/app-Proyecto/lista-actores/'
     def test_func(self):
         return self.request.user.is_staff
@@ -99,7 +149,7 @@ class CrearDirector(StaffRequiredMixin, CreateView):
 
 class CrearPelicula(StaffRequiredMixin, CreateView):
     model = Película
-    template_name = "peliFormulario.html"
+    template_name = "crearPeli.html"
     fields=['título','director', 'productora' ]
     success_url='/app-Proyecto/lista-pelis/'
     def test_func(self):
@@ -108,10 +158,13 @@ class CrearPelicula(StaffRequiredMixin, CreateView):
 class CrearCritico(StaffRequiredMixin, CreateView):
     model = Critico
     template_name = "crearCritico.html"
-    fields=['nombre','apellido','email']
+    fields = ['nombre', 'apellido', 'email']
     success_url='/app-Proyecto/lista-criticos/'
     def test_func(self):
-        return self.request.user.is_staff
+        return self.request.user.is_superuser
+    def form_valid(self, form):
+        form.instance.save(request=self.request)
+        return redirect(self.success_url)
 
 class CrearCritica(StaffRequiredMixin, CreateView):
     model = Critica
@@ -129,7 +182,7 @@ class CrearCritica(StaffRequiredMixin, CreateView):
         )'''
         class Meta:
             model = Critica
-            fields = ['pelicula', 'titulo', 'texto']
+            fields = ['pelicula', 'titulo', 'subtitulo','texto', 'imagen']
     form_class = CriticaForm
     success_url='/app-Proyecto/pages/'
     def test_func(self):
@@ -142,6 +195,7 @@ class CrearCritica(StaffRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
+        form.instance.critico = self.request.user.critico
         form.instance.pelicula = self.get_context_data()['pelicula']
         return super().form_valid(form)
 
@@ -189,11 +243,22 @@ class ActualizarCritica(StaffRequiredMixin, UpdateView):
     context_object_name= "critica"
     def test_func(self):
         return self.request.user.is_staff
+    
+class BorrarCuenta(LoginRequiredMixin, DeleteView):
+    model = get_user_model()
+    template_name = "borrarCuenta.html"
+    success_url = '/app-Proyecto/'
+    context_object_name= "user"
+    def get_object(self, queryset=None):
+        return self.request.user
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 class BorrarActor(StaffRequiredMixin, DeleteView):
     model = Actor
     template_name = "borrarActor.html"
-    success_url='/app-Proyecto/lista-actores/'
+    success_url = '/app-Proyecto/lista-actores'
     context_object_name= "actor"
     def test_func(self):
         return self.request.user.is_staff
@@ -201,7 +266,7 @@ class BorrarActor(StaffRequiredMixin, DeleteView):
 class BorrarDirector(StaffRequiredMixin, DeleteView):
     model = Director
     template_name = "borrarDirector.html"
-    success_url='/app-Proyecto/lista-directores/'
+    success_url = '/app-Proyecto/lista-directores'
     context_object_name= "director"
     def test_func(self):
         return self.request.user.is_staff
@@ -209,7 +274,7 @@ class BorrarDirector(StaffRequiredMixin, DeleteView):
 class BorrarPelicula(StaffRequiredMixin, DeleteView):
     model = Película
     template_name = "borrarPelicula.html"
-    success_url='/app-Proyecto/lista-pelis/'
+    success_url = '/app-Proyecto/lista-pelis'
     context_object_name= "pelicula"
     def test_func(self):
         return self.request.user.is_staff
@@ -225,11 +290,10 @@ class BorrarCritico(StaffRequiredMixin, DeleteView):
 class BorrarCritica(StaffRequiredMixin, DeleteView):
     model = Critica
     template_name = "borrarCritica.html"
-    success_url='/app-Proyecto/lista-criticas'
-    context_object_name= "critica"
+    success_url = '/app-Proyecto/pages/'
     def test_func(self):
         return self.request.user.is_staff
-
+    
 def buscar(req):
     if 'nombre' in req.GET and 'apellido' in req.GET:
         nombre= req.GET['nombre']
@@ -288,12 +352,13 @@ def register(req):
             data=miFormulario.cleaned_data
             u=data["username"]
             miFormulario.save()
-            return render(req, "inicio.html", {"mensaje": f"Usuario {u} registrado correctamente"})
+            return render(req, "login.html", {"mensaje": f"Usuario {u} registrado correctamente"})
         return render(req, "registro.html", {"mensaje": f"Formulario inválido"})
     else:
         miFormulario=UserCreationForm()
         return render(req, "registro.html", {"miFormulario": miFormulario})
-    
+
+@login_required(login_url='login')
 def editar_perfil(req):
     usuario= req.user
     if usuario:

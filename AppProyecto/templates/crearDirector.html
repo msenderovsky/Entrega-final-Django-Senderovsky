@@ -1,7 +1,7 @@
 {% extends 'padre.html' %}
 
 {% block contenido %}
-    <form action="{% url 'crearCritica' pk=pelicula.id %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+    <form action="{% url 'crearDirector' %}" method="post">{% csrf_token %}
         {{form.as_p}}
         <button type="submit">Enviar</button>
     </form>

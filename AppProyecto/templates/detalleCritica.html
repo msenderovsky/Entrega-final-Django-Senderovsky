@@ -2,9 +2,10 @@
 
 {% block contenido %}
 
-    <h2>Crítica de {{critica.pelicula.nombre}}</h2>
+    <h2>Crítica de {{critica.pelicula.título}}</h2>
+    <img src="{{ critica.imagen.url }}" alt="Crítica Imagen">
     <h3>{{critica.titulo}}</h3>
-    <h5>{{critica.critico.nombre}}{{critica.critico.apellido}}</h5>
+    <h5>Crítica escrita por {{critica.critico.nombre}} {{critica.critico.apellido}}</h5>
     <p>{{critica.texto}}</p>
     
 {% endblock contenido %}

@@ -1,0 +1,14 @@
+{% extends 'padre.html' %}
+
+{% block contenido %}
+
+    <h2>Resumen de {{user.username}}</h2>
+    <form action="{% url 'detalleUsuario' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+        {{form.as_p}}
+
+        {{user.first_name}}
+        {{user.last_name}}
+        <button type="submit">Enviar</button>
+    </form>
+    
+{% endblock contenido %}

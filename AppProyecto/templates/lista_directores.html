@@ -1,17 +1,31 @@
 {% extends 'padre.html' %}
 
 {% block contenido %}
-    <ul>
-        {% for director in lista_directores %}
-            <li>
-                {{director.nombre}} {{director.apellido}}
-                <form action="{% url 'eliminarDirector' director.id %}" method="post">{% csrf_token %}
-                    <button type="submit">Eliminar</button>
-                </form>
-                <button>
-                    <a href="{% url 'actualizarDirector' director.id %}">Editar</a>
-                </button>
-            </li>
-        {% endfor %}
-    </ul>
+        {% if lista_directores %}
+            <h3>Lista de Directores:</h3>
+            <ul>
+            {% for director in lista_directores %}
+                <li>
+                    {{director.nombre}} {{director.apellido}}
+                    <form action="{% url 'eliminarDirector' director.id %}" method="get">{% csrf_token %}
+                        <button type="submit">Eliminar</button>
+                    </form>
+                    <button> 
+                        <a href="{% url 'detalleDirector' director.id %}">Ver detalles de director</a>
+                    </button>
+                    <button> 
+                        <a href="{% url 'lista_peliculas_director' director.id %}">Ver películas</a>
+                    </button>
+                    <button>
+                        <a href="{% url 'actualizarDirector' director.id %}">Editar</a>
+                    </button>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay directores creados</p>
+        {% endif %}
+        <button>
+            <a href="{% url 'crearDirector' %}">Crear nuevo director</a>
+        </button>
 {% endblock contenido %}

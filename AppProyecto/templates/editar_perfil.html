@@ -3,6 +3,10 @@
 {% block contenido %}
     <form action="{% url 'editarPerfil' %}" method="post">{% csrf_token %}
         {{miFormulario.as_p}}
+        
         <button type="submit">Editar usuario</button>
     </form>
+    <button>
+        <a href="{% url 'borrarCuenta' user.id %}">Borrar Cuenta</a>
+    </button>
 {% endblock contenido %}

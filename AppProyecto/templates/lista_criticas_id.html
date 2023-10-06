@@ -1,18 +1,32 @@
 {% extends 'padre.html' %}
 
 {% block contenido %}
-    <ul>
-        {% for critica in lista_criticas %}
-        
-        <h3>Lista de críticas para {{critica.pelicula.título}}</h3>
-            <li>
-                <button action="/app-Proyecto/pages/{{ critica.id }}/" class="link">Ver Crítica
+        {% if lista_criticas %}
+            <h3>Lista de críticas para {{lista_criticas.0.pelicula.título}}</h3>
+            <ul>
+            {% for critica in lista_criticas %}
+                <li>
+                    <ul>
+                        <li>
+                            Título:{{critica.titulo}}
+                        </li>
+                        <li>
+                            Autor: {{critica.critico.nombre}} {{critica.critico.apellido}}
+                        </li>
+                    </ul>
+                    <button>
+                        <a href="{% url 'detalleCritica' critica.id %}">Ver Crítica</a>
+                    </button>
+                </li>
+                <button>
+                    <a href="{% url 'detallePeli' critica.pelicula.id %}">Volver a página de la película</a>
                 </button>
-            </li>
-            <button action="{% url 'detallePeli' critica.pelicula.id %}">Volver a página de la película
-            </button>
-            <button action="{% url 'lista_criticas_id' critica.pelicula.id %}">Ver otras críticas
-            </button>
-        {% endfor %}
-    </ul>
+                <button>
+                    <a href="{% url 'lista_criticas' %}">Ver otras críticas</a>
+                </button>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay críticas creadas</p>
+        {% endif %}
 {% endblock contenido %}
